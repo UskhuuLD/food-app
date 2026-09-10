@@ -1,12 +1,18 @@
 import mongoose from "mongoose";
 
-const URI = process.env.MONGODB_URI
+const URI = process.env.MONGODB_URI;
 
-export const connectDb = async()=>{
-    if(!URI){
-        console.log("URI BHGU")
-        return
-    }
+// Serverless orchind davhar holbolt uusgehgui bolgohын tuld cache hийнэ
+let cached: Promise<typeof mongoose> | null = null;
 
-    await mongoose.connect(URI)
-}
+export const connectDb = async () => {
+  if (!URI) {
+    console.log("URI BHGU");
+    return;
+  }
+  if (mongoose.connection.readyState === 1) return;
+  if (!cached) {
+    cached = mongoose.connect(URI);
+  }
+  await cached;
+};
