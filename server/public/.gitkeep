@@ -1,2 +1,0 @@
-# Keeps this directory in git. Netlify needs a publish dir to exist;
-# the API has no static assets, so this one stays empty on purpose.
