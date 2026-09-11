@@ -1,7 +1,9 @@
-import { handle } from "hono/vercel";
+import { getRequestListener } from "@hono/node-server";
 import app from "../src/index.js";
 
-// Vercel looks for a default-exported handler under api/. hono/vercel's
-// `handle` adapts Hono's app.fetch to the (req: Request) => Response shape
-// Vercel's Node.js runtime expects. vercel.json rewrites every path here.
-export default handle(app);
+// Vercel's Node.js function runtime invokes handlers the classic Node way
+// — (req: IncomingMessage, res: ServerResponse) — not with a Web-standard
+// Request/Response. hono/vercel's `handle()` assumes the latter and blows
+// up here ("this.raw.headers.get is not a function"). getRequestListener
+// bridges Hono's app.fetch to the Node req/res shape Vercel actually calls.
+export default getRequestListener(app.fetch);

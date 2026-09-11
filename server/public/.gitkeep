@@ -1,0 +1,3 @@
+# Empty on purpose — this API has no static assets.
+# Its presence stops Vercel from falling back to serving the whole
+# project root (src/, tsconfig.json, etc.) as static files.
