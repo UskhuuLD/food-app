@@ -12,7 +12,13 @@ export const connectDb = async () => {
   }
   if (mongoose.connection.readyState === 1) return;
   if (!cached) {
-    cached = mongoose.connect(URI);
+    // Amjilttai bolvol ondor holboltoo cache-d hadgalna; amjilgui bolbol
+    // cache-g tsevershyulj daraagiin duudalt shine oroldlogo hiine —
+    // esvel serverless container ni ondor buruu tsahim ashiglaad l bult.
+    cached = mongoose.connect(URI).catch((err) => {
+      cached = null;
+      throw err;
+    });
   }
   await cached;
 };
